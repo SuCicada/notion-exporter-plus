@@ -9,9 +9,15 @@ interface Task {
   status: { exportURL?: string }
 }
 
+interface Config {
+  timeZone?: string
+  recursive?: boolean
+}
+
 /** Lightweight client to export ZIP, Markdown or CSV files from a Notion block/page. */
 export class NotionExporter {
   protected readonly client: AxiosInstance
+  protected readonly config: Config
 
   /**
    * Create a new NotionExporter client. To export any blocks/pages from
@@ -19,14 +25,19 @@ export class NotionExporter {
    * the corresponding pages.
    *
    * @param token – the Notion 'token_v2' Cookie value
+   * @param config - config
    */
-  constructor(token: string) {
+  constructor(token: string,
+              config: Config={}) {
     this.client = axios.create({
       baseURL: "https://www.notion.so/api/v3/",
       headers: {
         Cookie: `token_v2=${token}; `,
       },
     })
+    this.config = config
+    if (this.config.timeZone == undefined) this.config.timeZone = "Europe/Zurich"
+    if (this.config.recursive == undefined) this.config.recursive = false
   }
 
   /**
@@ -44,10 +55,10 @@ export class NotionExporter {
         eventName: "exportBlock",
         request: {
           block: { id },
-          recursive: false,
+          recursive: this.config.recursive,
           exportOptions: {
             exportType: "markdown",
-            timeZone: "Europe/Zurich",
+            timeZone: this.config.timeZone,
             locale: "en",
           },
         },

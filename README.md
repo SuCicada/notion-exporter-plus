@@ -1,3 +1,8 @@
+# What I modify
+- configable recursive and timeZone
+
+----
+
 # Notion Exporter 🛫
 
 A simple CLI tool and TypeScript library for exporting Markdown and CSV files

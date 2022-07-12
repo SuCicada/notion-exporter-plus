@@ -2,3 +2,11 @@
 .DS_Store
 node_modules
 dist
+package-lock.json
+.idea
+src/*.js
+src/*.js.map
+test/*.js
+test/*.js.map
+output
+test/test.ts
